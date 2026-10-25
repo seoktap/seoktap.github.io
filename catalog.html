@@ -11,9 +11,9 @@ permalink: /catalog/
   </section>
 
   <div class="filters">
-    <select id="f-g" aria-label="종목"><option value="">종목 전체</option>{% assign gs = site.data.pagodas | map: "grade_group" | uniq %}{% for g in gs %}<option>{{ g }}</option>{% endfor %}</select>
-    <select id="f-r" aria-label="지역"><option value="">지역 전체</option>{% assign rs = site.data.pagodas | map: "region" | uniq | sort %}{% for r in rs %}<option>{{ r }}</option>{% endfor %}</select>
-    <select id="f-e" aria-label="시대"><option value="">시대 전체</option>{% assign es = site.data.pagodas | map: "era" | uniq | sort %}{% for e in es %}<option>{{ e }}</option>{% endfor %}</select>
+    <select id="f-g" aria-label="종목"><option value="">종목 전체</option>{% assign gs = site.data.pagodas | map: "grade_group" | compact | uniq %}{% for g in gs %}<option>{{ g }}</option>{% endfor %}</select>
+    <select id="f-r" aria-label="지역"><option value="">지역 전체</option>{% assign rs = site.data.pagodas | map: "region" | compact | uniq | sort %}{% for r in rs %}<option>{{ r }}</option>{% endfor %}</select>
+    <select id="f-e" aria-label="시대"><option value="">시대 전체</option>{% assign es = site.data.pagodas | map: "era" | compact | uniq | sort %}{% for e in es %}<option>{{ e }}</option>{% endfor %}</select>
     <select id="f-d" aria-label="읽은 여부"><option value="">읽은 여부 전체</option><option value="y">읽은 탑</option><option value="n">아직 안 읽은 탑</option></select>
     <input id="f-q" type="search" placeholder="이름·주소 검색" aria-label="이름·주소 검색">
   </div>
