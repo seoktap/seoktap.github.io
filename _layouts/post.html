@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-{% assign info = site.data.pagodas | where: "no", page.no | first %}
+{% assign info = site.data.pagodas | where: "num", page.num | first %}
 <article class="col" {% if info %}data-g="{{ info.grade_group }}"{% endif %}>
   <header class="head">
     {% if info %}
@@ -13,8 +13,26 @@ layout: default
     {% endif %}
     <h1>{{ page.title }}</h1>
     <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y년 %-m월 %-d일" }}</time>
-    {% if info %}<p class="seq">전체 목록 {{ info.no }}번째 · {{ site.data.pagodas.size }}건 중</p>{% endif %}
+    {% if info %}<p class="seq">전체 목록 {{ info.num }}번째 · {{ site.data.pagodas.size }}건 중</p>{% endif %}
   </header>
+  {% if page.model %}
+  <script type="importmap">
+  {"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+  </script>
+  <section class="viewer" id="pagoda-viewer" aria-label="3D 모식 모델">
+    <div class="view" role="img" aria-label="{{ info.name | default: page.title }} 3D 모식 모델"></div>
+    <div class="viewer-bar">
+      <button type="button" data-act="rotate" aria-pressed="true">회전 멈춤</button>
+      <button type="button" data-act="home">처음 시점</button>
+      <button type="button" data-act="front">정면</button>
+      <button type="button" data-act="top">위에서</button>
+    </div>
+    <p class="viewer-note">3D로 둘러보기. 마우스로 끌어 돌리고 휠로 확대합니다. 휴대폰에서는 좌우로 밀어 돌리고 두 손가락으로 확대합니다. 층수와 평면 같은 구조 정보만 반영해 단순화한 <b>모식 모델</b>이어서, 실제 조각·비례·훼손 상태와는 다릅니다.</p>
+    <noscript><p class="viewer-note">3D 보기에는 자바스크립트가 필요합니다.</p></noscript>
+  </section>
+  <script type="application/json" id="pagoda-model">{{ page.model | jsonify }}</script>
+  <script type="module" src="{{ '/assets/pagoda3d.js' | relative_url }}"></script>
+  {% endif %}
   <div class="stack">
     <div class="paper layered backed">
       <div class="body">

@@ -11,7 +11,7 @@ permalink: /archive/
   {% if site.posts.size > 0 %}
   <ul class="posts">
     {% for post in site.posts %}
-    {% assign pi = site.data.pagodas | where: "no", post.no | first %}
+    {% assign pi = site.data.pagodas | where: "num", post.num | first %}
     <li {% if pi %}data-g="{{ pi.grade_group }}"{% endif %}>
       <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
       <span class="meta">{{ post.date | date: "%Y년 %-m월 %-d일" }}{% if pi %} · {{ pi.grade }} · {{ pi.era }} · {{ pi.region }}{% endif %}</span>

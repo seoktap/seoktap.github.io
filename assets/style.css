@@ -191,3 +191,24 @@ a { color: var(--link); text-underline-offset: 3px; }
 
 /* 글 아래 안내 */
 .after { margin: 28px 0 0; display: flex; flex-wrap: wrap; gap: 6px 22px; font-weight: 700; }
+
+/* 3D 보기 */
+.viewer { margin: 0 0 22px; background: var(--sheet); border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; }
+.viewer .view {
+  position: relative; height: clamp(300px, 62vw, 480px);
+  background: linear-gradient(#EEF3F4 0%, #F6F2E8 70%, #EAE3D2 100%);
+}
+.viewer .view canvas { display: block; width: 100%; height: 100%; outline-offset: -3px; cursor: grab; }
+.viewer .view canvas:active { cursor: grabbing; }
+.viewer:not(.is-ready):not(.is-failed) .view::after {
+  content: "3D 모델을 불러오는 중"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: .95rem;
+}
+.viewer.is-failed .view { display: none; }
+.viewer-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 14px 0; }
+.viewer.is-failed .viewer-bar { display: none; }
+.viewer-bar button {
+  font: inherit; font-size: .88rem; font-weight: 700; color: var(--text); background: var(--s);
+  border: 0; border-radius: 999px; padding: 6px 14px; cursor: pointer;
+}
+.viewer-bar button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.viewer-note { margin: 0; padding: 8px 14px 12px; font-size: .84rem; line-height: 1.6; color: var(--muted); }

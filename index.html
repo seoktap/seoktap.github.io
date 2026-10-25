@@ -22,7 +22,7 @@ title: 석탑 읽기
 
   {% if site.posts.size > 0 %}
   {% assign latest = site.posts.first %}
-  {% assign li = site.data.pagodas | where: "no", latest.no | first %}
+  {% assign li = site.data.pagodas | where: "num", latest.num | first %}
   <section class="section" {% if li %}data-g="{{ li.grade_group }}"{% endif %}>
     <h2>오늘의 탑</h2>
     <ul class="posts big">
@@ -38,7 +38,7 @@ title: 석탑 읽기
     <h2>이전에 읽은 탑</h2>
     <ul class="posts">
       {% for post in site.posts offset: 1 limit: 10 %}
-      {% assign pi = site.data.pagodas | where: "no", post.no | first %}
+      {% assign pi = site.data.pagodas | where: "num", post.num | first %}
       <li {% if pi %}data-g="{{ pi.grade_group }}"{% endif %}>
         <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
         <span class="meta">{{ post.date | date: "%Y년 %-m월 %-d일" }}</span>

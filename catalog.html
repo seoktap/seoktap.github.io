@@ -3,7 +3,7 @@ layout: default
 title: 전체 목록
 permalink: /catalog/
 ---
-{% capture done_keys %}{% for p in site.posts %}|{{ p.no }}|{% endfor %}{% endcapture %}
+{% capture done_keys %}{% for p in site.posts %}|{{ p.num }}|{% endfor %}{% endcapture %}
 <div class="col">
   <section class="head">
     <h1>전체 목록</h1>
@@ -21,11 +21,11 @@ permalink: /catalog/
 
   <ul class="catalog" id="catalog">
     {% for row in site.data.pagodas %}
-    {% assign key = "|" | append: row.no | append: "|" %}
+    {% assign key = "|" | append: row.num | append: "|" %}
     {% assign is_done = false %}{% if done_keys contains key %}{% assign is_done = true %}{% endif %}
     <li data-g="{{ row.grade_group }}" data-r="{{ row.region }}" data-e="{{ row.era }}" data-d="{% if is_done %}y{% else %}n{% endif %}" data-q="{{ row.name }} {{ row.address }} {{ row.hanja }}">
-      <span class="no">{{ row.no }}</span>
-      <span class="nm">{% if is_done %}{% assign pp = site.posts | where: "no", row.no | first %}<a href="{{ pp.url | relative_url }}">{{ row.name }}</a>{% else %}{{ row.name }}{% endif %}</span>
+      <span class="no">{{ row.num }}</span>
+      <span class="nm">{% if is_done %}{% assign pp = site.posts | where: "num", row.num | first %}<a href="{{ pp.url | relative_url }}">{{ row.name }}</a>{% else %}{{ row.name }}{% endif %}</span>
       <span class="state{% unless is_done %} todo{% endunless %}">{% if is_done %}읽음{% else %}예정{% endif %}</span>
       <span class="sub">{{ row.grade }} · {{ row.era }} · {{ row.place }}</span>
     </li>
