@@ -1,0 +1,24 @@
+---
+layout: default
+title: 읽은 탑
+permalink: /archive/
+---
+<div class="col">
+  <section class="head">
+    <h1>읽은 탑</h1>
+    <p class="lede">올라온 글을 최신순으로 모았습니다.</p>
+  </section>
+  {% if site.posts.size > 0 %}
+  <ul class="posts">
+    {% for post in site.posts %}
+    {% assign pi = site.data.pagodas | where: "no", post.no | first %}
+    <li {% if pi %}data-g="{{ pi.grade_group }}"{% endif %}>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      <span class="meta">{{ post.date | date: "%Y년 %-m월 %-d일" }}{% if pi %} · {{ pi.grade }} · {{ pi.era }} · {{ pi.region }}{% endif %}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="empty">아직 올라온 글이 없습니다.</p>
+  {% endif %}
+</div>

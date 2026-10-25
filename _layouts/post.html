@@ -1,0 +1,29 @@
+---
+layout: default
+---
+{% assign info = site.data.pagodas | where: "no", page.no | first %}
+<article class="col" {% if info %}data-g="{{ info.grade_group }}"{% endif %}>
+  <header class="head">
+    {% if info %}
+    <div class="chips">
+      <span class="chip">{{ info.grade }}</span>
+      <span class="chip plain">{{ info.era }}</span>
+      <span class="chip plain">{{ info.region }}</span>
+    </div>
+    {% endif %}
+    <h1>{{ page.title }}</h1>
+    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y년 %-m월 %-d일" }}</time>
+    {% if info %}<p class="seq">전체 목록 {{ info.no }}번째 · {{ site.data.pagodas.size }}건 중</p>{% endif %}
+  </header>
+  <div class="stack">
+    <div class="paper layered backed">
+      <div class="body">
+        {{ content }}
+      </div>
+    </div>
+  </div>
+  <p class="after">
+    <a href="{{ '/archive/' | relative_url }}">읽은 탑 모두 보기</a>
+    <a href="{{ '/catalog/' | relative_url }}">전체 목록에서 찾기</a>
+  </p>
+</article>

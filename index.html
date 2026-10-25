@@ -1,0 +1,54 @@
+---
+layout: default
+title: 석탑 읽기
+---
+{% assign total = site.data.pagodas.size %}
+{% assign done = site.posts.size %}
+<div class="col">
+  <section class="hero">
+    <h1 class="sr">석탑 읽기</h1>
+    <p class="lede-big" style="margin:0;font-size:1.25rem;font-weight:700;line-height:1.6;">국가유산으로 지정된 석탑 {{ total }}건을 하루에 한 기씩 읽습니다.</p>
+    <p>기본 정보, 구조와 양식, 지나온 내력, 지금의 보존 상황을 차례로 살펴봅니다. 순서는 국가유산청 검색 목록을 따릅니다.</p>
+    <div class="progress">
+      <div class="label"><span>읽은 탑</span><span>{{ done }} / {{ total }}</span></div>
+      <div class="track" role="img" aria-label="{{ total }}건 중 {{ done }}건 읽음"><div class="fill" style="width: {{ done | times: 100.0 | divided_by: total | round: 1 }}%"></div></div>
+    </div>
+    <div class="tiles">
+      <a class="tile" data-g="국보" href="{{ '/catalog/?g=국보' | relative_url }}"><b>{{ site.data.pagodas | where: "grade_group", "국보" | size }}</b><span>국보</span></a>
+      <a class="tile" data-g="보물" href="{{ '/catalog/?g=보물' | relative_url }}"><b>{{ site.data.pagodas | where: "grade_group", "보물" | size }}</b><span>보물</span></a>
+      <a class="tile" data-g="시·도 지정" href="{{ '/catalog/?g=시·도 지정' | relative_url }}"><b>{{ site.data.pagodas | where: "grade_group", "시·도 지정" | size }}</b><span>시·도 지정 유산</span></a>
+    </div>
+  </section>
+
+  {% if site.posts.size > 0 %}
+  {% assign latest = site.posts.first %}
+  {% assign li = site.data.pagodas | where: "no", latest.no | first %}
+  <section class="section" {% if li %}data-g="{{ li.grade_group }}"{% endif %}>
+    <h2>오늘의 탑</h2>
+    <ul class="posts big">
+      <li>
+        <span class="meta">{{ latest.date | date: "%Y년 %-m월 %-d일" }}{% if li %} · {{ li.grade }} · {{ li.era }} · {{ li.region }}{% endif %}</span>
+        <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
+        <p class="excerpt">{{ latest.excerpt | strip_html | strip_newlines | truncate: 130 }}</p>
+      </li>
+    </ul>
+  </section>
+  {% if site.posts.size > 1 %}
+  <section class="section">
+    <h2>이전에 읽은 탑</h2>
+    <ul class="posts">
+      {% for post in site.posts offset: 1 limit: 10 %}
+      {% assign pi = site.data.pagodas | where: "no", post.no | first %}
+      <li {% if pi %}data-g="{{ pi.grade_group }}"{% endif %}>
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        <span class="meta">{{ post.date | date: "%Y년 %-m월 %-d일" }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <p class="more"><a href="{{ '/archive/' | relative_url }}">읽은 탑 모두 보기</a></p>
+  </section>
+  {% endif %}
+  {% else %}
+  <section class="section"><p class="empty">아직 올라온 글이 없습니다. 첫 글이 올라오면 이곳에 표시됩니다.</p></section>
+  {% endif %}
+</div>

@@ -1,0 +1,33 @@
+title: 석탑 읽기
+description: 국가유산으로 지정된 석탑 511건을 하루에 한 기씩 읽습니다.
+# 사용자 도메인을 연결하면 url을 그 주소로 바꾸고 baseurl을 비웁니다.
+url: https://zzigguin.github.io
+baseurl: "/seoktap"
+lang: ko
+timezone: Asia/Seoul
+
+permalink: /posts/:year/:month/:day/:title/
+future: true
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor

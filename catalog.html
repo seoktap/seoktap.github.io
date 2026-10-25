@@ -1,0 +1,66 @@
+---
+layout: default
+title: 전체 목록
+permalink: /catalog/
+---
+{% capture done_keys %}{% for p in site.posts %}|{{ p.no }}|{% endfor %}{% endcapture %}
+<div class="col">
+  <section class="head">
+    <h1>전체 목록</h1>
+    <p class="lede">국가유산청 검색 목록 {{ site.data.pagodas.size }}건입니다. 읽은 탑은 이름을 눌러 글로 갈 수 있습니다.</p>
+  </section>
+
+  <div class="filters">
+    <select id="f-g" aria-label="종목"><option value="">종목 전체</option>{% assign gs = site.data.pagodas | map: "grade_group" | uniq %}{% for g in gs %}<option>{{ g }}</option>{% endfor %}</select>
+    <select id="f-r" aria-label="지역"><option value="">지역 전체</option>{% assign rs = site.data.pagodas | map: "region" | uniq | sort %}{% for r in rs %}<option>{{ r }}</option>{% endfor %}</select>
+    <select id="f-e" aria-label="시대"><option value="">시대 전체</option>{% assign es = site.data.pagodas | map: "era" | uniq | sort %}{% for e in es %}<option>{{ e }}</option>{% endfor %}</select>
+    <select id="f-d" aria-label="읽은 여부"><option value="">읽은 여부 전체</option><option value="y">읽은 탑</option><option value="n">아직 안 읽은 탑</option></select>
+    <input id="f-q" type="search" placeholder="이름·주소 검색" aria-label="이름·주소 검색">
+  </div>
+  <p class="count-line" id="count" aria-live="polite"></p>
+
+  <ul class="catalog" id="catalog">
+    {% for row in site.data.pagodas %}
+    {% assign key = "|" | append: row.no | append: "|" %}
+    {% assign is_done = false %}{% if done_keys contains key %}{% assign is_done = true %}{% endif %}
+    <li data-g="{{ row.grade_group }}" data-r="{{ row.region }}" data-e="{{ row.era }}" data-d="{% if is_done %}y{% else %}n{% endif %}" data-q="{{ row.name }} {{ row.address }} {{ row.hanja }}">
+      <span class="no">{{ row.no }}</span>
+      <span class="nm">{% if is_done %}{% assign pp = site.posts | where: "no", row.no | first %}<a href="{{ pp.url | relative_url }}">{{ row.name }}</a>{% else %}{{ row.name }}{% endif %}</span>
+      <span class="state{% unless is_done %} todo{% endunless %}">{% if is_done %}읽음{% else %}예정{% endif %}</span>
+      <span class="sub">{{ row.grade }} · {{ row.era }} · {{ row.place }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+<script>
+(function () {
+  var items = Array.prototype.slice.call(document.querySelectorAll('#catalog li'));
+  var ids = { g: 'f-g', r: 'f-r', e: 'f-e', d: 'f-d' };
+  var q = document.getElementById('f-q');
+  var count = document.getElementById('count');
+  function apply() {
+    var v = {};
+    Object.keys(ids).forEach(function (k) { v[k] = document.getElementById(ids[k]).value; });
+    var t = q.value.trim().toLowerCase();
+    var n = 0;
+    items.forEach(function (li) {
+      var ok = (!v.g || li.dataset.g === v.g) && (!v.r || li.dataset.r === v.r) &&
+               (!v.e || li.dataset.e === v.e) && (!v.d || li.dataset.d === v.d) &&
+               (!t || li.dataset.q.toLowerCase().indexOf(t) !== -1);
+      li.hidden = !ok;
+      if (ok) n++;
+    });
+    count.textContent = n + '건';
+  }
+  Object.keys(ids).forEach(function (k) { document.getElementById(ids[k]).addEventListener('change', apply); });
+  q.addEventListener('input', apply);
+  try {
+    var p = new URLSearchParams(location.search);
+    ['g', 'r', 'e', 'd'].forEach(function (k) {
+      var el = document.getElementById(ids[k]);
+      if (p.get(k)) { el.value = p.get(k); }
+    });
+  } catch (e) {}
+  apply();
+})();
+</script>
